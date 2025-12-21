@@ -1,59 +1,64 @@
-// Sum calculate karne ka function
+// Function to calculate the sum
 const sumReqeuestHandler = (req, res) => {
   console.log("Sum request handler working");
-  // Body data collect karne ke liye
+
+  // Array to collect incoming body data
   const body = [];
-  //on() ka matlab → event listener lagana
 
-  // Data chunks receive karne ke liye event listener
+  // on() means attaching an event listener
+
+  // Event listener to receive data chunks
   req.on("data", (chunk) => {
-    //“Jab bhi data ka ek chunk aaye, mujhe batao”
-    //Yahi kaam "data" event karta hai.
-
+    // This event fires whenever a chunk of data is received
     body.push(chunk);
   });
 
-  /*Jab data aata hai → "data" event fire hota hai
-  data" event ke saath callback call hota hai                                                                                
- Jab data aana band ho jaata hai → "data" event band ho jaata hai                                  
-Uske baad "end" event fire hota hai*/
+  /*
+    When request data arrives, the "data" event fires.
+    When all data is received, the "end" event fires.
+  */
 
-  // Jab saara data aa jaaye
+  // Runs when all data has been received
   req.on("end", () => {
-    /*Jab request aati hai, to data chunks ke form me aata hai.
+    /*
+      Request body comes in chunks as Buffers.
+      All buffers are stored in the body array.
+      Buffer.concat(body) joins all chunks into one buffer.
+      toString() converts it into a string.
+    */
 
-Har chunk ek Buffer hota hai aur usko hum apne banaye hue body array me store karte hain.
-
-Jab saare chunks aa jaate hain, tab Buffer.concat(body) se un sab buffers ko jod diya jaata hai aur .toString() se unhe string me convert kar diya jaata hai, jise bodyStr me store karte hain.
-
-Ye string URL-encoded form me hoti hai, isliye usko use karne ke liye URLSearchParams me pass karte hain.
-
-URLSearchParams is encoded string ko internally decode karke key-value pairs me convert kar deta hai, jisse hum easily data access kar sakte hain.*/
-
-    // Buffer ko string me convert
+    // Convert buffer data to string
     const bodyStr = Buffer.concat(body).toString();
 
-    // Query string ko parse
-    const params = new URLSearchParams(bodyStr); //URLSearchParams is used to parse URL-encoded form data into key-value pairs.and eaa eake class ka constructor hai
-    /*Object JavaScript ka built-in constructor function hai, aur hum uske static method (fromEntries) ko use kar rahe hain, jo internally ek naya plain object create karke return karta hai.*/
+    // Parse URL-encoded form data into key-value pairs
+    const params = new URLSearchParams(bodyStr);
 
-    // Object banaya
+    /*
+      Object.fromEntries is a static method
+      that converts key-value pairs into a plain object.
+    */
+
+    // Convert parsed data into an object
     const bodyObj = Object.fromEntries(params);
-    // Number me convert karke sum nikala
+
+    // Convert values to numbers and calculate sum
     const result = Number(bodyObj.first) + Number(bodyObj.second);
     console.log(result);
+
+    // Send HTML response with the result
     res.setHeader("Content-Type", "text/html");
     res.write(`<html>
         <head>
         <title>Home Page.</title>
         </head>
         <body>
-        <h1>Your sum id ${result}</h1>
+        <h1>Your sum is ${result}</h1>
         <a href="/calculator">Back</a>
         </body>
         </html>`);
     return res.end();
   });
 };
-// Export function
+
+// Export the function
 exports.sumReqeuestHandler = sumReqeuestHandler;

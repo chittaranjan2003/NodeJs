@@ -1,24 +1,24 @@
-// http module import ho raha hai (Node.js ka in-built module)
-// Is module ki madad se hum HTTP server bana sakte hain
+// Import the http module (Node.js built-in module)
+// This module is used to create an HTTP server
 const http = require("http");
 
-// fs module import ho raha hai
-// Is module ka use file system ke sath kaam karne ke liye hota hai
+// Import the fs module
+// This module is used to work with the file system
 const fs = require("fs");
 
-// HTTP server create ho raha hai
-// Ye callback function tab chalega jab bhi browser se request aayegi
+// Create an HTTP server
+// This callback function runs whenever a request comes from the browser
 const server = http.createServer((req, res) => {
-  // Har incoming request ka URL, method aur headers console me print honge
+  // Log the request URL, method, and headers
   console.log(req.url, req.method, req.headers);
 
   // ===== HOME PAGE ROUTE =====
-  // Agar user "/" URL hit karta hai
+  // If the user visits the "/" URL
   if (req.url === "/") {
-    // Response ka content type HTML set kar rahe hain
+    // Set the response content type to HTML
     res.setHeader("Content-Type", "text/html");
 
-    // Browser ko HTML form page bhej rahe hain
+    // Send the HTML form page to the browser
     res.write(`<html>
         <head>
         <title>Home Page.</title>
@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
         <body>
         <h1>Enter Your Details.</h1>
 
-        <!-- Form submit hone par /submit route POST request ke sath hit hoga -->
+        <!-- When the form is submitted, a POST request is sent to /submit -->
         <form action="/submit" method="POST">
         <input type="text" name="name' placeholder="Enter your name"><br><br>
 
@@ -43,28 +43,28 @@ const server = http.createServer((req, res) => {
         </body>
         </html>`);
 
-    // Response yahin end ho jata hai
+    // End the response here
     return res.end();
   }
 
   // ===== FORM SUBMIT ROUTE =====
-  // Agar URL /submit ho aur request method POST ho
+  // If the URL is "/submit" and the request method is POST
   else if (req.url.toLocaleLowerCase() === "/submit" && req.method === "POST") {
-    // Server side par file me data write ho raha hai (synchronous way)
+    // Write data to a file on the server (synchronous operation)
     fs.writeFileSync("user.txt", "Chitta");
 
-    // Client ko redirect karne ke liye status code set kar rahe hain
+    // Set status code for redirection
     res.statusCode = 302;
 
-    // Redirect hone ke baad user "/" page par wapas jayega
+    // After redirect, the user will go back to the "/" page
     res.setHeader("Location", "/");
   }
 
   // ===== 404 ERROR PAGE =====
-  // Agar URL kisi bhi route se match nahi karta
+  // If the URL does not match any route above
   res.setHeader("Content-Type", "text/html");
 
-  // Error page ka HTML response bhej rahe hain
+  // Send the 404 error page HTML
   res.write(`<html>
         <head><title>Error Page.</title>
         </head>
@@ -73,14 +73,14 @@ const server = http.createServer((req, res) => {
         </body>
         </html>`);
 
-  // Response end
+  // End the response
   return res.end();
 });
 
-// Server kis port par run karega
+// Define the port on which the server will run
 const PORT = 3000;
 
-// Server start ho raha hai aur given port par listen kar raha hai
+// Start the server and listen on the given port
 server.listen(PORT, () => {
-  console.log(`Server running  on address http://localhost:${PORT}`);
+  console.log(`Server running on address http://localhost:${PORT}`);
 });

@@ -1,20 +1,22 @@
-// http module import ho raha hai (Node.js ka in-built module)
-// Ye module HTTP server create karne ke kaam aata hai
+// Import the http module (Node.js built-in module)
+// This module is used to create an HTTP server
 const http = require("http");
 
-// HTTP server create ho raha hai
-// Ye callback function har incoming request par execute hoga
+// Create an HTTP server
+// This callback function runs for every incoming request
 const server = http.createServer((req, res) => {
-  // Har request ka URL, method aur headers console me print honge
+
+  // Print request URL, method, and headers in the console
   console.log(req.url, req.method, req.headers);
 
   // ===== ROOT ROUTE "/" =====
-  // Jab user base URL hit kare (http://localhost:3000/)
+  // When the user hits the base URL (http://localhost:3000/)
   if (req.url === "/") {
-    // Browser ko bataya ja raha hai ki response HTML hai
+
+    // Tell the browser that the response is HTML
     res.setHeader("Content-Type", "text/html");
 
-    // Main Myntra landing page browser ko bhej rahe hain
+    // Send the main Myntra landing page to the browser
     res.write(`<html>
         <head>
         <title>Myntra Page.</title>
@@ -31,17 +33,18 @@ const server = http.createServer((req, res) => {
         </body>
         </html>`);
 
-    // Response yahin end ho jata hai
+    // End the response here
     return res.end();
   }
 
   // ===== HOME PAGE ROUTE =====
-  // Jab user /home URL open kare
+  // When the user opens the /home URL
   else if (req.url === "/home") {
-    // Response ka type HTML set kar rahe hain
+
+    // Set response content type as HTML
     res.setHeader("Content-Type", "text/html");
 
-    // Home page ka HTML bhej rahe hain
+    // Send Home page HTML
     res.write(`<html>
         <head>
         <title>Home Page.</title>
@@ -51,17 +54,18 @@ const server = http.createServer((req, res) => {
         </body>
         </html>`);
 
-    // Response end
+    // End response
     return res.end();
   }
 
   // ===== MEN PAGE ROUTE =====
-  // Jab user /men URL open kare
+  // When the user opens the /men URL
   else if (req.url === "/men") {
-    // Content type HTML set
+
+    // Set content type to HTML
     res.setHeader("Content-Type", "text/html");
 
-    // Men page ka content bhej rahe
+    // Send Men page content
     res.write(`<html>
         <head>
         <title>Men Page.</title>
@@ -71,17 +75,18 @@ const server = http.createServer((req, res) => {
         </body>
         </html>`);
 
-    // Response finish
+    // Finish response
     return res.end();
   }
 
   // ===== WOMEN PAGE ROUTE =====
-  // Jab user /women URL open kare
+  // When the user opens the /women URL
   else if (req.url === "/women") {
-    // Response header set
+
+    // Set response header
     res.setHeader("Content-Type", "text/html");
 
-    // Women page ka HTML bhej rahe
+    // Send Women page HTML
     res.write(`<html>
         <head>
         <title>Women Page.</title>
@@ -91,17 +96,18 @@ const server = http.createServer((req, res) => {
         </body>
         </html>`);
 
-    // Response end
+    // End response
     return res.end();
   }
 
   // ===== KIDS PAGE ROUTE =====
-  // Jab user /kids URL open kare
+  // When the user opens the /kids URL
   else if (req.url === "/kids") {
-    // Content type HTML
+
+    // Set content type as HTML
     res.setHeader("Content-Type", "text/html");
 
-    // Kids page ka content
+    // Send Kids page content
     res.write(`<html>
         <head>
         <title>Kids Page.</title>
@@ -111,52 +117,9 @@ const server = http.createServer((req, res) => {
         </body>
         </html>`);
 
-    // Response close
+    // Close response
     return res.end();
   }
 
   // ===== CART PAGE ROUTE =====
-  // Jab user /cart URL open kare
-  else if (req.url === "/cart") {
-    // Header set
-    res.setHeader("Content-Type", "text/html");
-
-    // Cart page ka HTML
-    res.write(`<html>
-        <head>
-        <title>Cart Page.</title>
-        </head>
-        <body>
-        <h1>Welcome to Cart Page</h1>
-        </body>
-        </html>`);
-
-    // Response end
-    return res.end();
-  }
-
-  // ===== 404 ERROR PAGE =====
-  // Agar upar ka koi bhi route match na kare
-  res.setHeader("Content-Type", "text/html");
-
-  // Error page browser ko bhej rahe
-  res.write(`<html>
-        <head>
-        <title>Error Page.</title>
-        </head>
-        <body>
-        <h1> 404 Page not found</h1>
-        </body>
-        </html>`);
-
-  // Response end
-  res.end();
-});
-
-// Server kis port par chalega
-const PORT = 3000;
-
-// Server start ho raha hai aur given port par listen kar raha hai
-server.listen(PORT, () => {
-  console.log(`Server running  on address http://localhost:${PORT}`);
-});
+  // When the user

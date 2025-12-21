@@ -1,8 +1,7 @@
-// Import sum handler from Sum.js file
-const { sumReqeuestHandler } = require("./Sum");
+const { SumHandler } = require("./Sum");
 
-// Main request handler function
-const requestHandler = (req, res) => {
+const ReqeuestHandler = (req, res) => {
+  // Log the requested URL and HTTP method
   console.log(req.url, req.method);
 
   // Home page route
@@ -17,6 +16,7 @@ const requestHandler = (req, res) => {
         <a href="/calculator">Go to Calculator</a>
         </body>
         </html>`);
+
     return res.end();
   }
 
@@ -29,23 +29,26 @@ const requestHandler = (req, res) => {
         </head>
         <body>
         <h1>Welcome to the Calculator page.</h1>
+
+        <!-- Form sends POST request to /result -->
         <form action="/result" method="POST">
         <input type="text" name="first" placeholder="Enter first number"/><br><br>
-        <input type="text" name="second" placeholder="Enter 2nd number"/><br><br>
+        <input type="text" name="second" placeholder="Enter second number"/><br><br>
         <button type="submit">Calculate</button><br><br>
         <a href="/">Back to Home</a>
         </form>
+
         </body>
         </html>`);
+
     return res.end();
   }
 
-  // Result route (POST request)
+  // Result route for POST request
   else if (req.url === "/result" && req.method === "POST") {
-    // Delegate calculation logic to Sum.js
-    return sumReqeuestHandler(req, res);
+    // Pass request and response to SumHandler
+    return SumHandler(req, res);
   }
 };
 
-// Export the handler so server.js can use it
-exports.requestHandler = requestHandler;
+exports.ReqeuestHandler = ReqeuestHandler;

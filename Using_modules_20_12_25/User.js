@@ -1,20 +1,20 @@
-// fs module import ho raha hai
-// Iska use file system ke sath kaam karne ke liye hota hai
+// Import the fs module
+// This module is used to work with the file system
 const fs = require("fs");
 
-// requestHandler ek function hai
-// Ye function server se aane wali har request ko handle karega
+// requestHandler is a function
+// This function handles every request coming to the server
 const requestHandler = (req, res) => {
-  // Har request ka URL console me print ho raha hai
+  // Print the request URL in the console
   console.log("Request URL:", req.url);
 
   // ===== HOME PAGE ROUTE =====
-  // Agar user "/" URL hit karta hai
+  // If the user visits the "/" URL
   if (req.url === "/") {
-    // Response ka content type HTML set kar rahe hain
+    // Set response content type to HTML
     res.setHeader("Content-Type", "text/html");
 
-    // Browser ko HTML form page bhej rahe hain
+    // Send the HTML form page to the browser
     res.write(`<html>
         <head>
         <title>Home Page.</title>
@@ -22,7 +22,7 @@ const requestHandler = (req, res) => {
         <body>
         <h1>Enter Your Details.</h1>
 
-        <!-- Form submit hone par POST request /submit par jayegi -->
+        <!-- When the form is submitted, a POST request goes to /submit -->
         <form action="/submit" method="POST">
         <input type="text" name="name' placeholder="Enter your name"><br><br>
 
@@ -39,53 +39,51 @@ const requestHandler = (req, res) => {
         </body>
         </html>`);
 
-    // Response yahin end ho jata hai
+    // End the response here
     return res.end();
   }
 
   // ===== FORM SUBMIT ROUTE =====
-  // Agar URL /submit ho aur request method POST ho
+  // If the URL is "/submit" and the request method is POST
   else if (req.url.toLocaleLowerCase() === "/submit" && req.method === "POST") {
-    // Body data ko collect karne ke liye empty array
+    // Create an empty array to collect request body data
     const body = [];
 
-    // "data" event tab fire hota hai
-    // jab request body ka chunk aata hai
+    // The "data" event fires when a chunk of data is received
     req.on("data", (chunk) => {
       console.log(chunk); // raw buffer data
-      body.push(chunk); // chunk ko array me push kar rahe
+      body.push(chunk); // store each chunk in the array
     });
 
-    // "end" event tab chalega
-    // jab saara data receive ho chuka hoga
+    // The "end" event fires when all data has been received
     req.on("end", () => {
-      // Saare chunks ko combine karke string bana rahe hain
+      // Combine all chunks and convert them into a string
       const fullBody = Buffer.concat(body).toString();
       console.log(fullBody);
 
-      // URL encoded data ko parse kar rahe hain
+      // Parse URL-encoded form data
       const params = new URLSearchParams(fullBody);
 
-      // Parsed data ko normal object me convert kar rahe hain
+      // Convert parsed data into a normal JavaScript object
       const bodyObj = Object.fromEntries(params);
       console.log(bodyObj);
 
-      // User ka data file me write kar rahe hain (sync way)
+      // Write user data into a file (synchronous operation)
       fs.writeFileSync("user.txt", JSON.stringify(bodyObj));
     });
 
-    // Redirect ke liye status code set kar rahe hain
+    // Set status code for redirection
     res.statusCode = 302;
 
-    // Redirect hone ke baad user "/" page par wapas jayega
+    // After redirect, the user will go back to the home page
     res.setHeader("Location", "/");
   }
 
   // ===== 404 ERROR PAGE =====
-  // Agar URL kisi bhi route se match nahi karta
+  // If no route matches the request URL
   res.setHeader("Content-Type", "text/html");
 
-  // 404 error page browser ko bhej rahe hain
+  // Send the 404 error page to the browser
   res.write(`<html>
         <head><title>Error Page.</title>
         </head>
@@ -94,10 +92,10 @@ const requestHandler = (req, res) => {
         </body>
         </html>`);
 
-  // Response end
+  // End the response
   return res.end();
 };
 
-// requestHandler function ko export kar rahe hain
-// Taaki dusri file (server.js) me use ho sake
+// Export the requestHandler function
+// So it can be used in server.js
 module.exports = requestHandler;
