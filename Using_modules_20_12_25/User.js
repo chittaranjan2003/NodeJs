@@ -39,7 +39,6 @@ const requestHandler = (req, res) => {
         </body>
         </html>`);
 
-    // End the response here
     return res.end();
   }
 
