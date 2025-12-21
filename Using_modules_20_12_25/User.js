@@ -97,5 +97,5 @@ const requestHandler = (req, res) => {
 };
 
 // Export the requestHandler function
-// So it can be used in server.js   ss
+// So it can be used in server.js
 module.exports = requestHandler;
