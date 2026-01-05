@@ -1,0 +1,3 @@
+{'TEXT':"HELLO WORLD"};
+{'TEXT2':'HII'};
+{'TEXT3':'CHITTA'};
